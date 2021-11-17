@@ -1,0 +1,13 @@
+{
+    "server": {
+        "port": 8088
+    },
+    "logFile": "C:\\logs\\hippoServer.log",
+    "database": {
+		"host": "127.0.0.1",
+		"port": "3366",
+		"user": "root",
+		"pass": "hippos_pass",
+		"database": "hippos"
+	}
+}

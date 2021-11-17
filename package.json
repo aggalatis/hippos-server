@@ -1,0 +1,24 @@
+{
+  "name": "hippo_server",
+  "version": "1.0.0",
+  "description": "Web server for hippos",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js",
+    "debug": "electron .",
+    "build-win": "electron-packager . Hippos-Server --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/images/hippo.ico --prune=true --out=release-builds"
+  },
+  "author": "AG",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^16.0.0",
+    "electron-packager": "^15.4.0"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3"
+  }
+}
