@@ -22,6 +22,8 @@ function createWindow() {
 const express = require("express")
 const morgan = require("morgan")
 const users = require("./routes/users")
+const products = require("./routes/products")
+const orders = require("./routes/orders")
 let webServer = express()
 
 webServer.use(express.json())
@@ -51,6 +53,8 @@ webServer.use(
 )
 webServer.use(express.urlencoded({ extended: true }))
 webServer.use("/hippoApi/users", users)
+webServer.use("/hippoApi/products", products)
+webServer.use("/hippoApi/orders", orders)
 
 webServer.listen(parameters.server.port, () => {
     helpers.log(`Server is running on port: ${parameters.server.port}`)
