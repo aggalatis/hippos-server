@@ -55,6 +55,12 @@ function validateObj(obj) {
     }
 }
 
+function changeMysqlDateToNormal(dateTime) {
+    let explodedDatetime = dateTime.split(" ")
+    let dateArray = explodedDatetime[0].split("-")
+    return dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0] + " " + explodedDatetime[1]
+}
+
 module.exports = {
     getParameters,
     log,
@@ -64,4 +70,5 @@ module.exports = {
     validateArr,
     validateObj,
     getReceiptDate,
+    changeMysqlDateToNormal,
 }

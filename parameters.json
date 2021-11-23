@@ -1,6 +1,11 @@
 {
+	"store": {
+		"id": 0,
+		"name": "Test Store"
+	},
     "server": {
-        "port": 8088
+        "port": 8088,
+		"remoteUrl": "http://174.138.4.153/sposServer/"
     },
     "logFile": "C:\\logs\\hippoServer.log",
     "database": {
@@ -9,6 +14,13 @@
 		"user": "root",
 		"pass": "hippos_pass",
 		"database": "hippos"
+	},
+	"summaries": {
+		"print": true,
+		"email": true,
+		"recipients": [
+			"ag@aggalatis.com"
+		]
 	},
 	"receipt": {
 		"header": [
