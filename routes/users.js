@@ -27,6 +27,15 @@ router.post("/authenticate", async (req, res) => {
         ])
     res.send(helpers.validateObj(dbUsers[0]))
 })
+
+router.post("/authenticate/logout", async (req, res) => {
+    const user = req.body.userData
+    db.query(
+        "UPDATE users SET user_last_logout = now() WHERE user_id = ? LIMIT 1",
+        [user.user_id]
+    )
+    res.send({status: 200})
+})
 router.delete("/:id", async (req, res) => {
     const userId = req.params.id
     const response = await db.query("DELETE FROM users WHERE user_id = ? LIMIT 1", [userId])

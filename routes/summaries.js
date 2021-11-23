@@ -28,19 +28,30 @@ router.get("/X", async (req, res) => {
         []
     )
     const summary = await db.query(
-        "SELECT order_payment_method, sum(order_total) as income_count, count(*) as customer_count FROM orders WHERE order_date_created > ? GROUP BY order_payment_method",
+        "SELECT \
+        usr.user_name as user_name, \
+        ord.order_payment_method as order_payment_method, \
+        sum(ord.order_subtotal) as order_subtotal, \
+        sum(ord.order_discount) as order_discount, \
+        sum(ord.order_total) as order_total, \
+        count(*) as customers_count \
+        FROM orders as ord \
+        JOIN users as usr on ord.order_user_id = usr.user_id \
+        WHERE ord.order_date_created > ? \
+        GROUP BY user_name, order_payment_method", 
         [lastColeDate[0].day_closure_datetime]
     )
+    let formattedSummaries = helpers.changeSummariesFormat(summary)
     let mailResponse = false
     let printResponse = false
     if (global.parameters.summaries.print == true) {
-        printResponse = printMng.printSummaryReport(lastColeDate[0].day_closure_datetime, summary)
+        printResponse = printMng.printSummaryReport(lastColeDate[0].day_closure_datetime, formattedSummaries)
     }
     if (global.parameters.summaries.email == true) {
         mailResponse = await mailMng.mailSummaryReport(
             "ΑΝΑΛΥΣΗ ΤΑΜΕΙΟΥ:",
             lastColeDate[0].day_closure_datetime,
-            summary
+            formattedSummaries
         )
     }
     res.send({ status: 200, data: { mail: mailResponse, print: printResponse } })

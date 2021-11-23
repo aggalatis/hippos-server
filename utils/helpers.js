@@ -61,6 +61,30 @@ function changeMysqlDateToNormal(dateTime) {
     return dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0] + " " + explodedDatetime[1]
 }
 
+function changeSummariesFormat(summaries) {
+    if (_.isEmpty(summaries)) return []
+    let finalSum = {}
+    for (let sum of summaries) {
+        if (_.isUndefined(finalSum[sum.user_name]))  {
+            finalSum[sum.user_name] = {
+                user_name: sum.user_name,
+                cash_income_count: 0,
+                card_income_count: 0,
+                sum_discount_count: 0,
+                sum_customer_count: 0
+            }
+        }
+        if (sum.order_payment_method == "cash") {
+            finalSum[sum.user_name].cash_income_count = sum.order_total
+        }
+        if (sum.order_payment_method == "card") {
+            finalSum[sum.user_name].card_income_count = sum.order_total
+        }
+        finalSum[sum.user_name].sum_discount_count += sum.order_discount
+        finalSum[sum.user_name].sum_customer_count += sum.customers_count
+    }
+    return _.values(finalSum)
+}
 module.exports = {
     getParameters,
     log,
@@ -71,4 +95,5 @@ module.exports = {
     validateObj,
     getReceiptDate,
     changeMysqlDateToNormal,
+    changeSummariesFormat
 }

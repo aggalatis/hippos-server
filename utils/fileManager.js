@@ -3,6 +3,7 @@ var iconv = require("iconv-lite")
 const helpers = require("./helpers")
 
 function createReceipt(receiptNumber, orderData) {
+    if (global.parameters.receipt.print != true) return
     let receiptHeader = global.parameters.receipt.header.join("\r\n")
     receiptHeader = receiptHeader.replace("{userName}", "tameio")
     receiptHeader = receiptHeader.replace("{receiptNumber}", receiptNumber)
