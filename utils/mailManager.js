@@ -9,17 +9,17 @@ async function mailSummaryReport(subject, lastCloseData, summaries) {
             lastCloseDate: helpers.changeMysqlDateToNormal(lastCloseData),
             closeDate: helpers.getDateTimeNow(),
             summaries: summaries,
-            recipients: global.parameters.summaries.recipients
+            recipients: global.parameters.summaries.recipients,
         },
     }
     return new Promise((resolve, reject) => {
         axios
             .post(`${global.parameters.server.remoteUrl}Mail/SendEmail`, emailData)
-            .then((response) => {
+            .then(response => {
                 if (response.status == 200) resolve(true)
                 resolve(false)
             })
-            .catch((error) => {
+            .catch(error => {
                 helpers.log(error.message)
                 reject(error)
             })

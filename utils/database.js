@@ -11,7 +11,7 @@ const configuration = {
     dateStrings: true,
 }
 
-async function query(sql, params) {
+async function query(sql, params = []) {
     try {
         const conn = await mysql.createConnection(configuration)
         const [rows, fields] = await conn.execute(sql, params)
@@ -24,18 +24,12 @@ async function query(sql, params) {
 }
 
 async function getDocumentCurrentNumber(documentId) {
-    const document = await query(
-        "SELECT document_number FROM documents WHERE document_id = ? LIMIT 1",
-        [documentId]
-    )
+    const document = await query("SELECT document_number FROM documents WHERE document_id = ? LIMIT 1", [documentId])
     return document[0].document_number
 }
 
 async function updateDocumentNumber(documentId) {
-    const document = await query(
-        "UPDATE documents SET document_number = document_number + 1 WHERE document_id = ? LIMIT 1",
-        [documentId]
-    )
+    const document = await query("UPDATE documents SET document_number = document_number + 1 WHERE document_id = ? LIMIT 1", [documentId])
 }
 
 async function createProductsForOrder(orderId, orderData) {

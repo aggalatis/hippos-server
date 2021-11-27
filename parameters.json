@@ -7,18 +7,22 @@
         "port": 8088,
 		"remoteUrl": "http://174.138.4.153/sposServer/"
     },
-    "logFile": "/home/aggalatis/hippoServer.log",
+    "logFile": "C:\\logs\\hippoServer.log",
     "database": {
-		"host": "localhost",
+		"host": "127.0.0.1",
 		"port": "3366",
 		"user": "root",
-		"pass": "1q2w3e4r",
+		"pass": "hippos_pass",
 		"database": "hippos"
 	},
 	"summaries": {
-		"print": false,
+		"print": true,
+		"printerConn": "192.168.1.155",
+		"printerType": "network",
 		"email": true,
+		"clear": true,
 		"recipients": [
+			"ag@aggalatis.com",
 			"factorytech.29@gmail.com"
 		]
 	},
@@ -52,8 +56,7 @@
 			"\r\n",
 			" Σήμανση: \r\n"
 		],
-		"path": "C:\\receipts\\",
-		"print": false
+		"path": "C:\\receipts\\"
 			
 	}
 }
