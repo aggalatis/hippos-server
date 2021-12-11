@@ -1,8 +1,10 @@
 const { app, BrowserWindow } = require("electron")
+const _ = require("underscore")
 const helpers = require("./utils/helpers")
 const fs = require("fs")
+
 global.parameters = helpers.getParameters()
-helpers.deleteFile(global.parameters.logFile)
+helpers.deleteFile(global.parameters.server.logFile)
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -26,11 +28,12 @@ const products = require("./routes/products")
 const orders = require("./routes/orders")
 const customers = require("./routes/customers")
 const summaries = require("./routes/summaries")
+const categories = require("./routes/categories")
 let webServer = express()
 
 webServer.use(express.json())
 // create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream(global.parameters.logFile, {
+var accessLogStream = fs.createWriteStream(global.parameters.server.logFile, {
     flags: "a",
 })
 
@@ -59,6 +62,7 @@ webServer.use("/hippoApi/products", products)
 webServer.use("/hippoApi/orders", orders)
 webServer.use("/hippoApi/customers", customers)
 webServer.use("/hippoApi/summaries", summaries)
+webServer.use("/hippoApi/categories", categories)
 
 webServer.listen(parameters.server.port, () => {
     helpers.log(`Server is running on port: ${parameters.server.port}`)

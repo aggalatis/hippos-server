@@ -12,10 +12,11 @@ router.get("/lastDay", async (req, res) => {
         res.send({ status: 500, data: "Αδυναμία επιλογής τελευταίου κλεισίματος." })
         return
     }
-    const summary = await db.query(
+    let summary = await db.query(
         "SELECT order_payment_method, sum(order_total) as income_count, count(*) as customer_count FROM orders WHERE order_date_created > ? GROUP BY order_payment_method",
         [lastColeDate[0].day_closure_datetime]
     )
+    if (global.parameters.summaries.view == false) summary = []
     res.send({ status: 200, lastDayClose: lastColeDate[0].day_closure_datetime, data: summary })
 })
 

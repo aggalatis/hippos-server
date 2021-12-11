@@ -32,6 +32,10 @@ function createReceipt(receiptNumber, orderData) {
     )
 }
 
+function createInvoice(invoiceNumber, orderData) {
+    console.log(`invoice`)
+}
+
 module.exports = {
     createReceipt,
 }
