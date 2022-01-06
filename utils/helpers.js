@@ -1,10 +1,9 @@
-const fs = require("fs")
-const db = require("./database")
-const moment = require("moment")
-const _ = require("underscore")
+const fs = require('fs')
+const moment = require('moment')
+const _ = require('underscore')
 
 function getParameters() {
-    return require("C:\\hippos\\hippos_server\\parameters.json")
+    return require('C:\\hippos\\hippos_server\\parameters.json')
 }
 function log(string) {
     fs.appendFile(global.parameters.server.logFile, `${getDateTimeNow()} --> ${string}\n`, err => {
@@ -18,15 +17,15 @@ function deleteFile(file) {
 }
 
 function getDateTimeNow() {
-    return moment().format("DD-MM-YYYY HH:mm:ss")
+    return moment().format('DD-MM-YYYY HH:mm:ss')
 }
 
 function getDateTimeNowMysql() {
-    return moment().format("YYYY-MM-DD HH:mm:ss")
+    return moment().format('YYYY-MM-DD HH:mm:ss')
 }
 
 function getReceiptDate() {
-    return moment().format("DD/MM/YYYY HH:mm")
+    return moment().format('DD/MM/YYYY HH:mm')
 }
 function getDateWithFormat(format) {
     return moment().format(format)
@@ -61,9 +60,9 @@ function validateObj(obj) {
 }
 
 function changeMysqlDateToNormal(dateTime) {
-    let explodedDatetime = dateTime.split(" ")
-    let dateArray = explodedDatetime[0].split("-")
-    return dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0] + " " + explodedDatetime[1]
+    let explodedDatetime = dateTime.split(' ')
+    let dateArray = explodedDatetime[0].split('-')
+    return dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0] + ' ' + explodedDatetime[1]
 }
 
 function changeSummariesFormat(summaries) {
@@ -79,10 +78,10 @@ function changeSummariesFormat(summaries) {
                 sum_customer_count: 0,
             }
         }
-        if (sum.order_payment_method == "cash") {
+        if (sum.order_payment_method == 'cash') {
             finalSum[sum.user_name].cash_income_count = sum.order_total
         }
-        if (sum.order_payment_method == "card") {
+        if (sum.order_payment_method == 'card') {
             finalSum[sum.user_name].card_income_count = sum.order_total
         }
         finalSum[sum.user_name].sum_discount_count += sum.order_discount
@@ -91,22 +90,56 @@ function changeSummariesFormat(summaries) {
     return _.values(finalSum)
 }
 
-function formatOrderDataForRocket(orderData) {
-    console.log(orderData)
-    const vats = await db.query("SELECT * FROM vats WHERE vat_deleted = 0")
-    let prodTotal = 0
-    let prodVatTotal = 0
-    let grossTotal = 0
+function formatOrderDataForRocket(orderData, vats) {
+    let pieceGrossValue = 0
+    let pieceNetValue = 0
+    let pieceVatvalue = 0
+    let netTotal = 0
     let vatTotal = 0
-    let cleanTotal = 0
+
+    let pieceDiscount = 0
+    let pieceNetDiscount = 0
+    let discountTotal = 0
+    let vatTotalsObj = {}
+    let lines = []
     for (let prod of orderData.products) {
         let vatData = vats.find(el => el.vat_id == prod.product_vat_id)
-        prodTotal = (parseFloat(prod.product_subtotal) - parseFloat(prod.product_discount)).toFixed(2)
-        prodVatTotal = (prodTotal / vatData.vat_decimal_full).toFixed(2)
-        grossTotal += prodTotal
-        vatTotal += prodVatTotal
+        pieceGrossValue = parseFloat(prod.product_price) - parseFloat(prod.product_discount)
+        pieceNetValue = pieceGrossValue / vatData.vat_decimal_full
+        pieceVatvalue = pieceGrossValue - pieceNetValue
+
+        pieceDiscount = parseFloat(prod.product_discount)
+        pieceNetDiscount = pieceDiscount / vatData.vat_decimal_full
+
+        if (typeof vatTotalsObj[vatData.vat_percent] === 'undefined') vatTotalsObj[vatData.vat_percent] = { netValue: 0, taxValue: 0 }
+        lines.push({
+            quantity: prod.product_quantity,
+            netValue: pieceNetValue.toFixed(2),
+            taxValue: pieceVatvalue.toFixed(2),
+            grossValue: pieceGrossValue.toFixed(2),
+            vatCategory: vatData.vat_rocket_id,
+            vatPercent: vatData.vat_percent,
+            discountNetValue: pieceNetDiscount.toFixed(2),
+            comment: prod.product_name,
+            measurementUnit: '1',
+        })
+        vatTotalsObj[vatData.vat_percent].netValue += pieceNetValue.toFixed(2) * prod.product_quantity
+        vatTotalsObj[vatData.vat_percent].taxValue += pieceVatvalue.toFixed(2) * prod.product_quantity
+
+        netTotal += pieceNetValue.toFixed(2) * prod.product_quantity
+        vatTotal += pieceVatvalue.toFixed(2) * prod.product_quantity
+        discountTotal += pieceNetDiscount.toFixed(2) * prod.product_quantity
     }
-    cleanTotal = grossTotal - vatTotal
+    return {
+        lines: lines,
+        totals: {
+            subtotal: netTotal.toFixed(2),
+            vatTotal: vatTotal.toFixed(2),
+            total: (netTotal + vatTotal).toFixed(2),
+            discount: discountTotal.toFixed(2),
+        },
+        vatTotals: vatTotalsObj,
+    }
 }
 module.exports = {
     getParameters,
