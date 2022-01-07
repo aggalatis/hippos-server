@@ -6,26 +6,32 @@ escpos.USB = require('escpos-usb')
 
 const helpers = require('./helpers')
 
-function printSummaryReport(subject, lastCloseDate, summaries) {
+async function printSummaryReport(subject, lastCloseDate, summaries) {
     let device = null
+    return new Promise((resolve, reject) => {
+        try {
+            nodeHtmlToImage({
+                output: './summary.png',
+                html: preparePrintTemplate(subject, lastCloseDate, summaries),
+            }).then(() => {
+                if (global.parameters.summaries.printerType == 'usb') {
+                    device = new escpos.USB(0x01, 0xff)
+                } else {
+                    device = new escpos.Network(global.parameters.summaries.printerConn)
+                }
+                const printer = new escpos.Printer(device)
 
-    nodeHtmlToImage({
-        output: './summary.png',
-        html: preparePrintTemplate(subject, lastCloseDate, summaries),
-    }).then(() => {
-        if (global.parameters.summaries.printerType == 'usb') {
-            device = new escpos.USB(0x01, 0xff)
-        } else {
-            device = new escpos.Network(global.parameters.summaries.printerConn)
-        }
-        const printer = new escpos.Printer(device)
-
-        escpos.Image.load('./summary.png', function (image) {
-            device.open(function () {
-                printer.raster(image).cut().close()
+                escpos.Image.load('./summary.png', function (image) {
+                    device.open(function () {
+                        printer.raster(image).cut().close()
+                    })
+                })
+                resolve(true)
             })
-        })
-        return true
+        } catch (err) {
+            helpers.log(`Print err: ${err}`)
+            reject(false)
+        }
     })
 }
 
