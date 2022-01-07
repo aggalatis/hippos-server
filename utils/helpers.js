@@ -17,7 +17,7 @@ function deleteFile(file) {
 }
 
 function getDateTimeNow() {
-    return moment().format('DD-MM-YYYY HH:mm:ss')
+    return moment().format('DD/MM/YYYY HH:mm:ss')
 }
 
 function getDateTimeNowMysql() {

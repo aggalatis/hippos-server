@@ -2,7 +2,6 @@ const _ = require('underscore')
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const helpers = require('./helpers')
-const db = require('./database')
 
 async function validateRocketaxToken() {
     if (_.isEmpty(global.parameters.rocketaxToken)) {
