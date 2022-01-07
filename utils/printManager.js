@@ -11,23 +11,29 @@ async function printSummaryReport(subject, lastCloseDate, summaries) {
     return new Promise((resolve, reject) => {
         try {
             nodeHtmlToImage({
-                output: './summary.png',
+                output: global.parameters.summaries.image,
                 html: preparePrintTemplate(subject, lastCloseDate, summaries),
-            }).then(() => {
-                if (global.parameters.summaries.printerType == 'usb') {
-                    device = new escpos.USB(0x01, 0xff)
-                } else {
-                    device = new escpos.Network(global.parameters.summaries.printerConn)
-                }
-                const printer = new escpos.Printer(device)
-
-                escpos.Image.load('./summary.png', function (image) {
-                    device.open(function () {
-                        printer.raster(image).cut().close()
-                    })
-                })
-                resolve(true)
+                puppeteerArgs: { executablePath: global.parameters.summaries.browserPath },
             })
+                .then(() => {
+                    if (global.parameters.summaries.printerType == 'usb') {
+                        device = new escpos.USB(0x01, 0xff)
+                    } else {
+                        device = new escpos.Network(global.parameters.summaries.printerConn)
+                    }
+                    const printer = new escpos.Printer(device)
+
+                    escpos.Image.load(global.parameters.summaries.image, function (image) {
+                        device.open(function () {
+                            printer.raster(image).cut().close()
+                        })
+                    })
+                    resolve(true)
+                })
+                .catch(err => {
+                    helpers.log(`Print err: ${err}`)
+                    reject(false)
+                })
         } catch (err) {
             helpers.log(`Print err: ${err}`)
             reject(false)

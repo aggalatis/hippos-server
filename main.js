@@ -4,6 +4,7 @@ const helpers = require('./utils/helpers')
 const fs = require('fs')
 
 global.parameters = helpers.getParameters()
+global.parameters.summaries.image = 'C:\\hippos\\hippos_server\\summary.png'
 helpers.deleteFile(global.parameters.server.logFile)
 
 function createWindow() {
