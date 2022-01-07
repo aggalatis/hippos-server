@@ -14,7 +14,7 @@ function createReceipt(receiptNumber, orderData) {
         let prStr = ''
         let quan = pr.product_quantity.toString().padEnd(5, ' ')
         let name = pr.product_name.substring(0, 10).padEnd(10, ' ')
-        let price = pr.product_price.toString().replace('.', ',').padStart(7, ' ')
+        let price = pr.product_price.toFixed(2).toString().replace('.', ',').padStart(7, ' ')
         let value = ((pr.product_price - pr.product_discount) * pr.product_quantity).toFixed(2).toString().replace('.', ',').padStart(7, ' ')
         let vat = pr.product_vat_percent.padStart(5, ' ')
         prStr = ' ' + quan + name + price + value + vat
@@ -38,6 +38,7 @@ async function createInvoice(invoiceNumber, orderData, orderMark, vats) {
     let invoiceHeader = global.parameters.invoice.header.join('\r\n')
     invoiceHeader = invoiceHeader.replace('{invoiceNumber}', invoiceNumber)
     invoiceHeader = invoiceHeader.replace('{invoiceMark}', orderMark)
+    invoiceHeader = invoiceHeader.replace('{invoiceSeira}', global.parameters.server.rocketSeira)
     invoiceHeader = invoiceHeader.replace('{dateTime}', helpers.getReceiptDate())
     invoiceHeader = invoiceHeader.replace('{userName}', orderData.user_name)
     invoiceHeader = invoiceHeader.replace('{customerFullname}', orderData.customer.customer_fullname)
