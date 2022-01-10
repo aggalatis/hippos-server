@@ -11,6 +11,7 @@ function createReceipt(receiptNumber, orderData) {
     receiptHeader = receiptHeader.replace('{dateTime}', helpers.getReceiptDate())
     let productsArr = []
     for (let pr of orderData.products) {
+        if (typeof pr.product_price === 'string') pr.product_price = parseFloat(pr.product_price)
         let prStr = ''
         let quan = pr.product_quantity.toString().padEnd(5, ' ')
         let name = pr.product_name.substring(0, 10).padEnd(10, ' ')

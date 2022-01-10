@@ -78,8 +78,4 @@ router.post('/invoice', async (req, res) => {
     res.send({ status: 200, data: 'Επιτυχής καταχώρηση παραγγελίας.' })
 })
 
-router.get('/receipt', async (req, res) => {
-    res.sendStatus(200)
-})
-
 module.exports = router
