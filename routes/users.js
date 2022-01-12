@@ -54,7 +54,7 @@ router.post('/authenticate/logout', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     const userId = req.params.id
     const response = await db.query('DELETE FROM users WHERE user_id = ? LIMIT 1', [userId])
-    if (response.affectedRows == 0) {
+    if (_.isUndefined(response.affectedRows) || response.affectedRows == 0) {
         res.send({
             status: 500,
             message: 'Αδυναμία διαγραφής χρήστη.',
@@ -80,7 +80,7 @@ router.put('/', async (req, res) => {
         [userData.user_fullname, userData.user_name, md5(userData.user_password), userData.user_role_id, userData.user_deleted, userData.user_id]
     )
 
-    if (response.affectedRows == 0) {
+    if (_.isUndefined(response.affectedRows) || response.affectedRows == 0) {
         res.send({
             status: 500,
             message: 'Αδυναμία επεξεργασίας χρήστη.',

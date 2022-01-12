@@ -29,9 +29,9 @@ function createReceipt(receiptNumber, orderData) {
     let paymentType = orderData.order_payment_method == 'cash' ? 'μετρητά' : 'πιστωτική κάρτα'
     receiptFooter = receiptFooter.replace('{typeOfReceipt}', paymentType)
     let buff = iconv.encode(receiptHeader + '\r\n' + productsArr.join('\r\n') + '\r\n' + receiptFooter, 'win1253')
-    fs.writeFile(`${global.parameters.receipt.path}hippos_${orderData.user_name.replace(' ', '')}_${receiptNumber}.txt`, buff, err =>
-        helpers.log(err)
-    )
+    fs.writeFile(`${global.parameters.receipt.path}hippos_${orderData.user_name.replace(' ', '')}_${receiptNumber}.txt`, buff, err => {
+        if (err) helpers.log(`Print err: ${err}`)
+    })
 }
 
 async function createInvoice(invoiceNumber, orderData, orderMark, vats) {
@@ -92,9 +92,9 @@ async function createInvoice(invoiceNumber, orderData, orderMark, vats) {
         invoiceHeader + '\r\n' + prodArr.join('\r\n') + '\r\n' + invoiceVatAnalysis + '\r\n' + vatsArr.join('\r\n') + '\r\n' + invoiceFooter + '\r\n',
         'win1253'
     )
-    fs.writeFile(`${global.parameters.invoice.path}hippos_${orderData.user_name.replace(' ', '')}_${invoiceNumber}.txt`, buff, err =>
-        helpers.log(err)
-    )
+    fs.writeFile(`${global.parameters.invoice.path}hippos_${orderData.user_name.replace(' ', '')}_${invoiceNumber}.txt`, buff, err => {
+        if (err) helpers.log(`Print err: ${err}`)
+    })
 }
 
 module.exports = {

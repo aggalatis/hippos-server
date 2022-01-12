@@ -31,6 +31,7 @@ const orders = require('./routes/orders')
 const customers = require('./routes/customers')
 const summaries = require('./routes/summaries')
 const categories = require('./routes/categories')
+const vats = require('./routes/vats')
 let webServer = express()
 
 webServer.use(express.json())
@@ -66,6 +67,7 @@ webServer.use('/hippoApi/orders', orders)
 webServer.use('/hippoApi/customers', customers)
 webServer.use('/hippoApi/summaries', summaries)
 webServer.use('/hippoApi/categories', categories)
+webServer.use('/hippoApi/vats', vats)
 
 webServer.listen(parameters.server.port, () => {
     helpers.log(`Server is running on port: ${parameters.server.port}`)
