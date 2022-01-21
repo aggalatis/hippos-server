@@ -56,7 +56,7 @@ router.get('/searchVat/:vat', async (req, res) => {
         Authorization: token,
     }
     axios
-        .get(`${global.parameters.server.aadeUrl}Goverment/Search/${customerVat}`, { headers: headers })
+        .get(`${global.parameters.server.remoteUrl}Goverment/Search/${customerVat}`, { headers: headers })
         .then(response => {
             if (response.status != 200) {
                 res.sendStatus(500)

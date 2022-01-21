@@ -45,8 +45,8 @@ router.post('/invoice', async (req, res) => {
     const currentInvoiceNumber = await db.getDocumentCurrentNumber(2)
     let orderMark = null
     const vats = await db.query('SELECT * FROM vats WHERE vat_deleted = 0')
-    if (global.parameters.server.aadeUrl != '') orderMark = await server.sendInvoiceToRocketax(currentInvoiceNumber + 1, orderData, vats)
-    if (global.parameters.server.aadeUrl != '' && orderMark == null) {
+    if (global.parameters.invoice.myData == true) orderMark = await server.sendInvoiceToRocketax(currentInvoiceNumber + 1, orderData, vats)
+    if (global.parameters.invoice.myData == true && orderMark == null) {
         res.send({ status: 500, data: 'Αδυναμία καταχώρησης τιμολογίου στην ΑΑΔΕ' })
         return
     }

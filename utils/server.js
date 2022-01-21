@@ -16,7 +16,7 @@ async function validateRocketaxToken() {
 async function getRocketServerToken() {
     return new Promise((resolve, reject) => {
         axios
-            .post(`${global.parameters.server.aadeUrl}Clients/Authenticate`, {
+            .post(`${global.parameters.server.remoteUrl}Clients/Authenticate`, {
                 username: global.parameters.server.rocketUser,
                 password: global.parameters.server.rocketPass,
             })
@@ -25,7 +25,7 @@ async function getRocketServerToken() {
                 resolve(null)
             })
             .catch(error => {
-                helpers.log(error.message)
+                helpers.log(error)
                 reject(error)
             })
     })
@@ -66,7 +66,7 @@ async function sendInvoiceToRocketax(invoiceNumber, orderData, vats) {
     }
     return new Promise((resolve, reject) => {
         axios
-            .post(`${global.parameters.server.aadeUrl}Incomes`, rocketMessage, { headers: headers })
+            .post(`${global.parameters.server.remoteUrl}Incomes`, rocketMessage, { headers: headers })
             .then(response => {
                 console.log(response)
                 if (response.status != 200) {

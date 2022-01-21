@@ -1,5 +1,6 @@
-const axios = require("axios")
-const helpers = require("./helpers")
+const axios = require('axios')
+const server = require('./server')
+const helpers = require('./helpers')
 
 async function mailSummaryReport(subject, lastCloseData, summaries) {
     let emailData = {
@@ -12,15 +13,19 @@ async function mailSummaryReport(subject, lastCloseData, summaries) {
             recipients: global.parameters.summaries.recipients,
         },
     }
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        const token = await server.validateRocketaxToken()
+        const headers = {
+            Authorization: token,
+        }
         axios
-            .post(`${global.parameters.server.remoteUrl}Mail/SendEmail`, emailData)
+            .post(`${global.parameters.server.remoteUrl}Mail/SendEmail`, emailData, { headers: headers })
             .then(response => {
                 if (response.status == 200) resolve(true)
                 resolve(false)
             })
             .catch(error => {
-                helpers.log(error.message)
+                helpers.log(error)
                 reject(error)
             })
     })

@@ -39,13 +39,19 @@ router.get('/X', async (req, res) => {
     let formattedSummaries = helpers.changeSummariesFormat(summary)
     let mailResponse = false
     let printResponse = false
-    if (global.parameters.summaries.print == true)
-        printResponse = await printMng.printSummaryReport('ΑΝΑΛΥΣΗ ΤΑΜΕΙΟΥ:', lastColeDate[0].day_closure_datetime, formattedSummaries)
 
-    if (global.parameters.summaries.email == true)
-        mailResponse = await mailMng.mailSummaryReport('ΑΝΑΛΥΣΗ ΤΑΜΕΙΟΥ:', lastColeDate[0].day_closure_datetime, formattedSummaries)
+    try {
+        if (global.parameters.summaries.print == true)
+            printResponse = await printMng.printSummaryReport('ΑΝΑΛΥΣΗ ΤΑΜΕΙΟΥ:', lastColeDate[0].day_closure_datetime, formattedSummaries)
 
-    res.send({ status: 200, data: { mail: mailResponse, print: printResponse } })
+        if (global.parameters.summaries.email == true)
+            mailResponse = await mailMng.mailSummaryReport('ΑΝΑΛΥΣΗ ΤΑΜΕΙΟΥ:', lastColeDate[0].day_closure_datetime, formattedSummaries)
+
+        res.send({ status: 200, data: { mail: mailResponse, print: printResponse } })
+    } catch (err) {
+        helpers.log(`Error on summaries: ${err}`)
+        res.send({ status: 500, data: { mail: mailResponse, print: printResponse } })
+    }
 })
 
 router.get('/Z', async (req, res) => {
@@ -67,18 +73,24 @@ router.get('/Z', async (req, res) => {
     let formattedSummaries = helpers.changeSummariesFormat(summary)
     let mailResponse = false
     let printResponse = false
-    if (global.parameters.summaries.print == true) {
-        printResponse = await printMng.printSummaryReport('ΚΛΕΙΣΙΜΟ ΤΑΜΕΙΟΥ:', lastColeDate[0].day_closure_datetime, formattedSummaries)
-    }
-    if (global.parameters.summaries.email == true) {
-        mailResponse = await mailMng.mailSummaryReport('ΚΛΕΙΣΙΜΟ ΤΑΜΕΙΟΥ:', lastColeDate[0].day_closure_datetime, formattedSummaries)
-    }
-    await db.query('INSERT INTO day_closure (day_closure_datetime) VALUES (?)', [helpers.getDateTimeNowMysql()])
-    if (global.parameters.summaries.clear) {
-        await db.query('DELETE FROM orders', [])
-        await db.query('DELETE FROM order_products', [])
-    }
 
-    res.send({ status: 200, data: { mail: mailResponse, print: printResponse } })
+    try {
+        if (global.parameters.summaries.print == true) {
+            printResponse = await printMng.printSummaryReport('ΚΛΕΙΣΙΜΟ ΤΑΜΕΙΟΥ:', lastColeDate[0].day_closure_datetime, formattedSummaries)
+        }
+        if (global.parameters.summaries.email == true) {
+            mailResponse = await mailMng.mailSummaryReport('ΚΛΕΙΣΙΜΟ ΤΑΜΕΙΟΥ:', lastColeDate[0].day_closure_datetime, formattedSummaries)
+        }
+        await db.query('INSERT INTO day_closure (day_closure_datetime) VALUES (?)', [helpers.getDateTimeNowMysql()])
+        if (global.parameters.summaries.clear) {
+            await db.query('DELETE FROM orders', [])
+            await db.query('DELETE FROM order_products', [])
+        }
+
+        res.send({ status: 200, data: { mail: mailResponse, print: printResponse } })
+    } catch (err) {
+        helpers.log(`Error on summaries: ${err}`)
+        res.send({ status: 500, data: { mail: mailResponse, print: printResponse } })
+    }
 })
 module.exports = router
