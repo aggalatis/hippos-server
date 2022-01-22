@@ -4,6 +4,9 @@
 -- ------------------------------------------------------
 -- Server version	5.7.36
 
+CREATE DATABASE IF NOT EXISTS hippos;
+USE hippos;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -335,3 +338,10 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2022-01-12 21:55:11
+
+-- Creating user
+
+CREATE USER 'hippos_user'@'localhost' IDENTIFIED BY 'hippos_pass';
+GRANT ALL PRIVILEGES ON hippos.* TO 'hippos_user'@'localhost';
+FLUSH PRIVILEGES;
+-- Created user
