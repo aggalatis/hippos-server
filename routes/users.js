@@ -3,6 +3,7 @@ const md5 = require('md5')
 const _ = require('underscore')
 const db = require('../utils/database')
 const helpers = require('../utils/helpers')
+const auth = require('../utils/auth')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
@@ -42,8 +43,14 @@ router.post('/authenticate', async (req, res) => {
         user.username,
         md5(user.password),
     ])
-    if (dbUsers && dbUsers.length !== 0) db.query('UPDATE users SET user_last_login = ? WHERE user_id = ?', [user.login_datetime, dbUsers[0].user_id])
-    res.send(helpers.validateObj(dbUsers[0]))
+    let token = null
+    if (dbUsers && dbUsers.length !== 0) {
+        db.query('UPDATE users SET user_last_login = ? WHERE user_id = ?', [user.login_datetime, dbUsers[0].user_id])
+        token = auth.createToken(dbUsers[0])
+        res.send({ status: 200, data: token })
+    } else {
+        res.send({ status: 500, data: null })
+    }
 })
 
 router.post('/authenticate/logout', async (req, res) => {

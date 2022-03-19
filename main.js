@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require('electron')
 const _ = require('underscore')
 const helpers = require('./utils/helpers')
 const fs = require('fs')
+const path = require('path')
 
 global.parameters = helpers.getParameters()
 global.parameters.summaries.image = 'C:\\hippos\\hippos_server\\summary.png'
@@ -18,6 +19,7 @@ function createWindow() {
     })
     win.setMenu(null)
     win.setResizable(false)
+    win.minimize()
     win.loadFile('index.html')
 }
 
@@ -26,6 +28,7 @@ const express = require('express')
 const morgan = require('morgan')
 const users = require('./routes/users')
 const userRoles = require('./routes/userRoles')
+const userSettings = require('./routes/userSettings')
 const products = require('./routes/products')
 const orders = require('./routes/orders')
 const customers = require('./routes/customers')
@@ -60,8 +63,23 @@ webServer.use(
     )
 )
 webServer.use(express.urlencoded({ extended: true }))
+
+// Views...
+webServer.use('/hippoView/assets', express.static(path.join(__dirname, 'frontend/assets')))
+webServer.use('/hippoView/admin/assets', express.static(path.join(__dirname, 'frontend/assets')))
+webServer.use('/hippoView/helpers', express.static(path.join(__dirname, 'frontend/helpers')))
+webServer.use('/hippoView/login', express.static(path.join(__dirname, 'frontend/views/login')))
+webServer.use('/hippoView/takeaway', express.static(path.join(__dirname, 'frontend/views/takeaway')))
+webServer.use('/hippoView/admin/dashboard', express.static(path.join(__dirname, 'frontend/views/admin/dashboard')))
+webServer.use('/hippoView/admin/catalogue', express.static(path.join(__dirname, 'frontend/views/admin/catalogue')))
+webServer.use('/hippoView/admin/customers', express.static(path.join(__dirname, 'frontend/views/admin/customers')))
+webServer.use('/hippoView/admin/preferences', express.static(path.join(__dirname, 'frontend/views/admin/preferences')))
+webServer.use('/hippoView/admin/users', express.static(path.join(__dirname, 'frontend/views/admin/users')))
+
+// Apis...
 webServer.use('/hippoApi/users', users)
 webServer.use('/hippoApi/userRoles', userRoles)
+webServer.use('/hippoApi/userSettings', userSettings)
 webServer.use('/hippoApi/products', products)
 webServer.use('/hippoApi/orders', orders)
 webServer.use('/hippoApi/customers', customers)
