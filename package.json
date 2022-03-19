@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node main.js",
     "debug": "electron .",
-    "package-win": "electron-packager . HipPos-Server --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/images/hippo.ico --prune=true --out=release-builds"
+    "package-win": "electron-packager . hippos --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/images/hippo.ico --prune=true --out=release-builds"
   },
   "author": "AG",
   "license": "ISC",
