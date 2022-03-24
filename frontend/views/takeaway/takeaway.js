@@ -1,5 +1,6 @@
 let TakeawayClass = function () {
     this.Helpers = new HelpersClass()
+    this.Helpers.managerLoader()
     this.Helpers.getCookie()
     this.Helpers.initSettings()
     this.Helpers.getUserSettings()
@@ -16,7 +17,7 @@ let TakeawayClass = function () {
             self.initializeNumpadNumbers('modal-numpad-input')
         }
         self.initializeCartButtons()
-    }, 2000)
+    }, 3000)
 
     this.selectedProductID = null
     this.selectedCategoryID = null
@@ -149,9 +150,9 @@ TakeawayClass.prototype.initializeProducts = function () {
 
                     self.fullProducts.push(response.data[i])
                     $('#append-products').append(
-                        `<button class='product-btn'  style='position: relative;display: none; width:${self.Helpers.products_width}; height:${
-                            self.Helpers.products_height
-                        }; background-color:${response.data[i].product_color}'
+                        `<button class='product-btn'  style='position: relative;display: none; width:${
+                            self.Helpers.userSettings.catalogue.products_width
+                        }; height:${self.Helpers.userSettings.catalogue.products_height}; background-color:${response.data[i].product_color}'
                          id='product_${response.data[i].product_id}'  data-product-index='${i}' data-product-background='${
                             response.data[i].product_color
                         }' data-product-category=${response.data[i].product_category_id}>
@@ -208,9 +209,9 @@ TakeawayClass.prototype.initializeCategories = function () {
                             "' data-category-background='" +
                             response.data[i].category_color +
                             "' class='category-btn' style='width:" +
-                            self.Helpers.categories_width +
+                            self.Helpers.userSettings.catalogue.categories_width +
                             ';height:' +
-                            self.Helpers.categories_height +
+                            self.Helpers.userSettings.catalogue.categories_height +
                             ';background-color: ' +
                             response.data[i].category_color +
                             "'>" +

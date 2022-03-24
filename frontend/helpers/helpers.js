@@ -168,3 +168,23 @@ HelpersClass.prototype.getUserSettings = function () {
         timeout: self.requestTimeout,
     })
 }
+
+HelpersClass.prototype.managerLoader = function () {
+    let self = this
+    $('.preloader-image-div').show()
+    $('.preloader-image-div').addClass('animate__animated animate__bounceInDown')
+    setTimeout(function () {
+        $('.preloader-image-div').removeClass('animate__animated').removeClass('animate__bounceInDown')
+        $('.preloader-image-div').addClass('animate__animated animate__rubberBand')
+    }, 1500)
+
+    setTimeout(function () {
+        $('.preloader-image-div').removeClass('animate__animated').removeClass('animate__swing')
+        $('.preloader-image-div').addClass('animate__animated animate__bounceOutDown')
+    }, 2300)
+    setTimeout(function () {
+        $('.preloader-image-div').removeClass('animate__animated').removeClass('animate__bounceOutDown')
+        $('.preloader-image-div').hide()
+        $('.main-content').show()
+    }, 3300)
+}

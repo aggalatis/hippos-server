@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,7 +40,7 @@
     <!-- waves -->
     <link rel="stylesheet" href="../assets/css/waves.min.css">
     <!-- daterangepicker -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/daterangepicker.css"/>
+    <link rel="stylesheet" type="text/css" href="../assets/css/daterangepicker.css" />
     <!-- css for the preview keyset extension -->
     <link href="../assets/css/keyboard-previewkeyset.css" rel="stylesheet">
     <!-- keyboard widget style -->
@@ -54,28 +55,278 @@
     <link rel="stylesheet" type="text/css" href="../assets/js/overhang.js-master/dist/overhang.min.css">
     <!-- Custom CSS -->
     <link href="../assets/css/Style-Light.css" rel="stylesheet">
+    <link href="../assets/css/animate.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="takeaway.css" rel="stylesheet">
-
 
 </head>
 
 
 <body>
+    <!--START MODALS-->
+    <!--START MODALS-->
+    <!--START MODALS-->
+    <!--START MODALS-->
+    <div class="modal" id="keyboard-modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div id='modal-keyboard=layout'>
+                    <div class="row">
 
-<!--START MODALS-->
-<!--START MODALS-->
-<!--START MODALS-->
-<!--START MODALS-->
-<div class="modal" id="keyboard-modal" tabindex="-1" role="dialog"
-           aria-labelledby="keyboardModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div id='modal-keyboard=layout'>
+                        <input id="modal-numpad-input" type="text">
+                        <button id="modal-delete-numpad" class="btn btn-danger">DEL</button>
+
+                    </div>
+                    <div class="row">
+                        <button class='numpad-btn' data-number="1" style="margin-left: 3%">
+                            1
+                        </button>
+                        <button class='numpad-btn' data-number="2">
+                            2
+                        </button>
+                        <button class='numpad-btn' data-number="3">
+                            3
+                        </button>
+                        <button class='numpad-btn' data-number="4" style="margin-left: 3%">
+                            4
+                        </button>
+                        <button class='numpad-btn' data-number="5">
+                            5
+                        </button>
+                        <button class='numpad-btn' data-number="6">
+                            6
+                        </button>
+                        <button class='numpad-btn' data-number="7" style="margin-left: 3%">
+                            7
+                        </button>
+                        <button class='numpad-btn' data-number="8">
+                            8
+                        </button>
+                        <button class='numpad-btn' data-number="9">
+                            9
+                        </button>
+                        <button class='numpad-btn' data-number="0" style="margin-left: 3%">
+                            0
+                        </button>
+                        <button class='confirm-numpad-btn'>
+                            OK
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal" id="discount-modal" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="discountModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #0c0c0c">
+                    <h4 class="modal-title">Έκπτωση παραγγελίας</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 style="text-align: center;text-decoration: underline">Επιλογή προϊόντων για έκπτωση</h4>
+                    <br />
+                    <table id="order-cart-table" class="display" width="100%"></table>
+                </div>
+                <div class="row" id="discount_amount_div"
+                    style="display: none; width: 90%; padding-left: 10%; padding-right: 10%">
+                    <label id="discount_amount_label" for="discount_amount"></label>
+                    <input type="text" name="discount_amount" class="easy-get easy-put form-control"
+                        id="discount_amount">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button style="width: 32%" id="percent_discount_btn" type="button" class="btn btn-success">Έκπτωση
+                        ποσοστού (%)
+                    </button>
+                    <button style="width: 32%" id="amount_discount_btn" type="button" class="btn btn-warning" disabled>
+                        Έκπτωση ποσού (€)
+                    </button>
+                    <button style="width: 64%;display: none" id="final_discount_btn" type="button" class="btn btn-info">
+                        Εφαρμογή έκπτωσης
+                    </button>
+                    <button style="width: 32%" id="close-discount-modal" type="button" class="btn btn-danger"
+                        data-dismiss="discount-modal">Άκυρο
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="invoice-modal" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="discountModalLabel">
+        <div class="modal-dialog" role="document" style="width: 90%">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #0c0c0c">
+                    <h4 class="modal-title">Έκδοση Τιμολογίου</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>Πελάτες</h3>
+                    <table id="customers-table" class="cell-border" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Επωνυμία</th>
+                                <th>Επάγγελμα</th>
+                                <th>ΑΦΜ</th>
+                                <th>Διεύθυνση</th>
+                                <th>Αριθμός</th>
+                                <th>Περιοχή</th>
+
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button style="width: 45%" id="choose-customer" type="button" class="btn btn-warning"
+                        disabled>Επιλογή πελάτη
+                    </button>
+                    <button style="width: 45%" id="close-invoice-modal" type="button" class="btn btn-danger"
+                        data-dismiss="invoice-modal">Άκυρο
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="customers-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Προσθήκη Πελάτη</h4>
+                </div>
+                <div class="modal-body">
+
+                    <input type="text" name="customer_id" class="form-control" id="customer_id" style="display: none">
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_vat_number">ΑΦΜ</label>
+                        <input type="number" name="customer_vat_number" class="form-control" id="customer_vat_number">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_vat_number">Αναζήτηση ΑΦΜ στην ΑΑΔΕ</label>
+                        <button name="search-customer" class="form-control btn-success" id="search-customer"><i
+                                class="fa fa-refresh"></i></button>
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12">
+                        <label for="customer_fullname">Επωνυμία</label>
+                        <input type="text" name="customer_fullname" class="form-control" id="customer_fullname">
+                    </div>
+                    <div class="form-group col-md-12 col-sm-12">
+                        <label for="customer_bussiness">Δραστηριότητα</label>
+                        <input type="text" name="customer_bussiness" class="form-control" id="customer_bussiness">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_tax_office">ΔΟΥ</label>
+                        <input type="text" name="customer_tax_office" class="form-control" id="customer_tax_office">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_phone">Τηλέφωνο</label>
+                        <input type="text" name="customer_phone" class="form-control" id="customer_phone">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_address">Διεύθυνση</label>
+                        <input type="text" name="customer_address" class="form-control" id="customer_address">
+                    </div>
+                    <div class="form-group col-md-3 col-sm-3">
+                        <label for="customer_address_number">Αριθμός</label>
+                        <input type="text" name="customer_address_number" class="form-control"
+                            id="customer_address_number">
+                    </div>
+                    <div class="form-group col-md-3 col-sm-3">
+                        <label for="customer_address_number">Υποκατάστημα</label>
+                        <input type="number" name="customer_branch" class="form-control" id="customer_branch">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_area">Περιοχή</label>
+                        <input type="text" name="customer_area" class="form-control" id="customer_area">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_postal_code">Τ.Κ.</label>
+                        <input type="text" name="customer_postal_code" class="form-control" id="customer_postal_code">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_load">ΦΟΡΤΩΣΗ</label>
+                        <input type="text" name="customer_load" class="form-control" id="customer_load">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="customer_destination">ΠΡΟΟΡΙΣΜΟΣ</label>
+                        <input type="text" name="customer_destination" class="form-control" id="customer_destination">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Aκύρωση
+                    </button>
+                    <button type="button" class="btn btn-add" id="save-customer">Αποθήκευση</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--END MODALS-->
+    <!--END MODALS-->
+    <!--END MODALS-->
+    <!--END MODALS-->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header" style="margin-bottom: 21px;">
+                <a class="navbar-brand" href="#" onClick="window.location.reload()" style="margin-right: 0;"><img
+                        src="../assets/icons/hippo.png" alt="logo" style="width: 75%;"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li id="add-customer-li" class="flat-box" style="margin:12%; zoom:200%; color:darkcyan"><i
+                            class="fa fa-user-plus fa-lg"></i></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="navbar-username"></li>
+                    <li class="flat-box"><a class="logout" title="Log out"><i class="fa fa-sign-out fa-lg"></i></a></li>
+                </ul>
+            </div>
+            <!-- Brand and toggle get grouped for better mobile display -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="preloader">
+        <div class="preloader-image-div" style="display: none">
+            <img class="preloader-image" src="../assets/icons/hippo.png" />
+        </div>
+    </div>
+    <!-- Page Content -->
+    <div class="container-fluid main-content" style="display: none">
+
+        <div class="left-side" id="categories-div">
+            <div class="row">
+                <div class="row row-horizon">
+                    <h4 id="categories_paginator"></h4>
+                </div>
+            </div>
+            <div class="outer-div">
+                <div id="append-categories">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="left-side" id="products-div">
+            <div class="row">
+                <div class="row row-horizon">
+                    <h4 id="products_paginator"></h4>
+                </div>
+            </div>
+            <div id='keyboard-layout'>
                 <div class="row">
-    
-                <input id="modal-numpad-input" type="text">
-                <button id="modal-delete-numpad" class="btn btn-danger">DEL</button>
-    
+                    <input id="numpad-input" type="text">
+                    <button id="delete-numpad" class="btn btn-danger">DEL</button>
+
                 </div>
                 <div class="row">
                     <button class='numpad-btn' data-number="1" style="margin-left: 3%">
@@ -111,334 +362,60 @@
                     <button class='confirm-numpad-btn'>
                         OK
                     </button>
-    
+
+                </div>
+            </div>
+            <div class="outer-div" id="products-layout">
+                <div id="append-products">
                 </div>
             </div>
         </div>
-
-        </div>
-    </div>
-</div>
-<div class="modal" id="discount-modal" data-backdrop="static" tabindex="-1" role="dialog"
-           aria-labelledby="discountModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #0c0c0c">
-                <h4 class="modal-title">Έκπτωση παραγγελίας</h4>
-            </div>
-            <div class="modal-body">
-                <h4 style="text-align: center;text-decoration: underline">Επιλογή προϊόντων για έκπτωση</h4>
-                <br/>
-                <table id="order-cart-table" class="display" width="100%"></table>
-            </div>
-            <div class="row" id="discount_amount_div"
-                 style="display: none; width: 90%; padding-left: 10%; padding-right: 10%">
-                <label id="discount_amount_label" for="discount_amount"></label>
-                <input type="text" name="discount_amount" class="easy-get easy-put form-control" id="discount_amount">
-
-            </div>
-
-            <div class="modal-footer">
-                <button style="width: 32%" id="percent_discount_btn" type="button" class="btn btn-success">Έκπτωση
-                    ποσοστού (%)
-                </button>
-                <button style="width: 32%" id="amount_discount_btn" type="button" class="btn btn-warning" disabled>
-                    Έκπτωση ποσού (€)
-                </button>
-                <button style="width: 64%;display: none" id="final_discount_btn" type="button" class="btn btn-info">
-                    Εφαρμογή έκπτωσης
-                </button>
-                <button style="width: 32%" id="close-discount-modal" type="button" class="btn btn-danger"
-                        data-dismiss="discount-modal">Άκυρο
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="invoice-modal" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-labelledby="discountModalLabel">
-    <div class="modal-dialog" role="document" style="width: 90%">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #0c0c0c">
-                <h4 class="modal-title">Έκδοση Τιμολογίου</h4>
-            </div>
-            <div class="modal-body">
-                <h3>Πελάτες</h3>
-                <table id="customers-table" class="cell-border" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th>Επωνυμία</th>
-                        <th>Επάγγελμα</th>
-                        <th>ΑΦΜ</th>
-                        <th>Διεύθυνση</th>
-                        <th>Αριθμός</th>
-                        <th>Περιοχή</th>
-
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button style="width: 45%" id="choose-customer" type="button" class="btn btn-warning" disabled>Επιλογή πελάτη
-                </button>
-                <button style="width: 45%" id="close-invoice-modal" type="button" class="btn btn-danger"
-                        data-dismiss="invoice-modal">Άκυρο
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="customers-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Προσθήκη Πελάτη</h4>
-            </div>
-            <div class="modal-body">
-
-                <input type="text" name="customer_id" class="form-control" id="customer_id" style="display: none">
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_vat_number">ΑΦΜ</label>
-                    <input type="number" name="customer_vat_number" class="form-control" id="customer_vat_number">
-                </div>
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_vat_number">Αναζήτηση ΑΦΜ στην ΑΑΔΕ</label>
-                    <button name="search-customer" class="form-control btn-success" id="search-customer"><i
-                            class="fa fa-refresh"></i></button>
-                </div>
-                <div class="form-group col-md-12 col-sm-12">
-                    <label for="customer_fullname">Επωνυμία</label>
-                    <input type="text" name="customer_fullname" class="form-control" id="customer_fullname">
-                </div>
-                <div class="form-group col-md-12 col-sm-12">
-                    <label for="customer_bussiness">Δραστηριότητα</label>
-                    <input type="text" name="customer_bussiness" class="form-control" id="customer_bussiness">
-                </div>
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_tax_office">ΔΟΥ</label>
-                    <input type="text" name="customer_tax_office" class="form-control" id="customer_tax_office">
-                </div>
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_phone">Τηλέφωνο</label>
-                    <input type="text" name="customer_phone" class="form-control" id="customer_phone">
-                </div>
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_address">Διεύθυνση</label>
-                    <input type="text" name="customer_address" class="form-control" id="customer_address">
-                </div>
-                <div class="form-group col-md-3 col-sm-3">
-                    <label for="customer_address_number">Αριθμός</label>
-                    <input type="text" name="customer_address_number" class="form-control" id="customer_address_number">
-                </div>
-                <div class="form-group col-md-3 col-sm-3">
-                    <label for="customer_address_number">Υποκατάστημα</label>
-                    <input type="number" name="customer_branch" class="form-control" id="customer_branch">
-                </div>
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_area">Περιοχή</label>
-                    <input type="text" name="customer_area" class="form-control" id="customer_area">
-                </div>
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_postal_code">Τ.Κ.</label>
-                    <input type="text" name="customer_postal_code" class="form-control" id="customer_postal_code">
-                </div>
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_load">ΦΟΡΤΩΣΗ</label>
-                    <input type="text" name="customer_load" class="form-control" id="customer_load">
-                </div>
-                <div class="form-group col-md-6 col-sm-6">
-                    <label for="customer_destination">ΠΡΟΟΡΙΣΜΟΣ</label>
-                    <input type="text" name="customer_destination" class="form-control" id="customer_destination">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Aκύρωση
-                </button>
-                <button type="button" class="btn btn-add" id="save-customer">Αποθήκευση</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<!--END MODALS-->
-<!--END MODALS-->
-<!--END MODALS-->
-<!--END MODALS-->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header" style="margin-bottom: 21px;">
-            <a class="navbar-brand" href="#" onClick="window.location.reload()" style="margin-right: 0;"><img
-                    src="../assets/icons/hippo.png" alt="logo"
-                    style="width: 75%;"></a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li id="add-customer-li" class="flat-box" style="margin:12%; zoom:200%; color:darkcyan"><i class="fa fa-user-plus fa-lg"></i></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li class="navbar-username"></li>
-                <li class="flat-box"><a class="logout" title="Log out"><i class="fa fa-sign-out fa-lg"></i></a></li>
-            </ul>
-        </div>
-        <!-- Brand and toggle get grouped for better mobile display -->
-    </div>
-    <!-- /.container -->
-</nav>
-
-
-<!-- Page Content -->
-<div class="container-fluid">
-
-
-    <div class="left-side" id="categories-div">
-        <div class="row">
-            <div class="row row-horizon">
-
-                <h4 id="categories_paginator"></h4>
-
-            </div>
-
-        </div>
-        <div class="outer-div">
-            <div id="append-categories">
-
-            </div>
-        </div>
-
-
-    </div>
-    <div class="left-side" id="products-div">
-        <div class="row">
-            <div class="row row-horizon">
-
-                <h4 id="products_paginator"></h4>
-
-            </div>
-
-        </div>
-        <div id='keyboard-layout'>
+        <div class="left-side" id="cart-div">
             <div class="row">
-
-            <input id="numpad-input" type="text">
-            <button id="delete-numpad" class="btn btn-danger">DEL</button>
-
-            </div>
-            <div class="row">
-                <button class='numpad-btn' data-number="1" style="margin-left: 3%">
-                    1
-                </button>
-                <button class='numpad-btn' data-number="2">
-                    2
-                </button>
-                <button class='numpad-btn' data-number="3">
-                    3
-                </button>
-                <button class='numpad-btn' data-number="4" style="margin-left: 3%">
-                    4
-                </button>
-                <button class='numpad-btn' data-number="5">
-                    5
-                </button>
-                <button class='numpad-btn' data-number="6">
-                    6
-                </button>
-                <button class='numpad-btn' data-number="7" style="margin-left: 3%">
-                    7
-                </button>
-                <button class='numpad-btn' data-number="8">
-                    8
-                </button>
-                <button class='numpad-btn' data-number="9">
-                    9
-                </button>
-                <button class='numpad-btn' data-number="0" style="margin-left: 3%">
-                    0
-                </button>
-                <button class='confirm-numpad-btn'>
-                    OK
-                </button>
-
-            </div>
-        </div>
-        <div class="outer-div" id="products-layout">
-            <div id="append-products">
-
+                <div class="row row-horizon" id="cart-header-div">
+                    <div class="col-md-12 group-title-div">
+                        <h4>Καλάθι προϊόντων</h4>
+                    </div>
+                </div>
+                <div>
+                    <div class="cart-product-quantity-div">
+                        <h5 class="cart-product-text">Ποσ.</h5>
+                    </div>
+                    <div class="cart-product-name-div">
+                        <h5 class="cart-product-text">Όνομα προϊόντος</h5>
+                    </div>
+                    <div class="cart-product-price-div">
+                        <h5 class="cart-product-text">Τιμή (€)</h5>
+                    </div>
+                </div>
+                <div id="append-cart-div">
+                </div>
+                <div class="row row-horizon" id="abilities-buttons-div">
+                    <button class="ability-btn btn-success" id="plus-product-btn"><i class="fa fa-plus"></i></button>
+                    <button class="ability-btn btn-warning" id="minus-product-btn"><i class="fa fa-minus"></i></button>
+                    <button class="ability-btn btn-danger" id="delete-product-btn"><i class="fa fa-times"></i></button>
+                    <button class="ability-btn btn-info" id="discount-product-btn"><i
+                            class="fa fa-percent"></i></button>
+                    <button class="ability-btn btn-primary" id="invoice-btn"><i class="fa fa-file"></i></button>
+                    <button class="ability-btn btn-success" id="cash-card-btn">ΜΕΤΡΗΤΑ</button>
+                </div>
+                <div class="row row-horizon" id="sum-order-div">
+                    <p id="cart-sum-start-price" class="order-stats" style="border-right: 2px solid white;">
+                        Αρχική τιμή:
+                        0,00 €</p>
+                    <p id="cart-sum-discount" class="order-stats" style="border-left: 2px solid white;">Έκπτωση:
+                        0,00 €</p>
+                </div>
+                <div class="row row-horizon" id="send-order-btn-div">
+                    <button class="btn-success" id="send-order-btn">0,00 €</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="left-side" id="cart-div">
-        <div class="row">
-            <div class="row row-horizon" id="cart-header-div">
-                <div class="col-md-12 group-title-div">
-                    <h4>Καλάθι προϊόντων</h4>
-                </div>
-            </div>
-            <div>
-                <div class="cart-product-quantity-div">
-                    <h5 class="cart-product-text">Ποσ.</h5>
-                </div>
-                <div class="cart-product-name-div">
-                    <h5 class="cart-product-text">Όνομα προϊόντος</h5>
-                </div>
-                <div class="cart-product-price-div">
-                    <h5 class="cart-product-text">Τιμή (€)</h5>
-                </div>
-            </div>
-            <div id="append-cart-div">
-
-
-            </div>
-            <div class="row row-horizon" id="abilities-buttons-div">
-
-                <button class="ability-btn btn-success" id="plus-product-btn"><i class="fa fa-plus"></i></button>
-                <button class="ability-btn btn-warning" id="minus-product-btn"><i class="fa fa-minus"></i></button>
-                <button class="ability-btn btn-danger" id="delete-product-btn"><i class="fa fa-times"></i></button>
-                <button class="ability-btn btn-info" id="discount-product-btn"><i class="fa fa-percent"></i></button>
-                <button class="ability-btn btn-primary" id="invoice-btn"><i class="fa fa-file"></i></button>
-                <button class="ability-btn btn-success" id="cash-card-btn">ΜΕΤΡΗΤΑ</button>
-
-            </div>
-            <div class="row row-horizon" id="sum-order-div">
-                <p id="cart-sum-start-price" class="order-stats" style="border-right: 2px solid white;">Αρχική τιμή:
-                    0,00 €</p>
-                <p id="cart-sum-discount" class="order-stats" style="border-left: 2px solid white;">Έκπτωση: 0,00 €</p>
-
-            </div>
-            <div class="row row-horizon" id="send-order-btn-div">
-                <button class="btn-success" id="send-order-btn">0,00 €</button>
-            </div>
-
-
-        </div>
-
     </div>
-
-
-</div>
-
-
-</div>
-
-<!-- /.container -->
-
-
-<!-- slim scroll script -->
 </body>
 
-<script>if (typeof module === 'object') {
-    window.module = module;
-    module = undefined;
-}
 
-</script>
 
 <!-- normal script imports etc  -->
 <script src="../assets/js/jquery-2.2.2.min.js"></script>
@@ -508,15 +485,12 @@
 
 
 <script type="text/javascript">
-
     let myTakeaway = new TakeawayClass();
     new ModCustomersClass();
     $(document).ready(function () {
 
 
     });
-
-
 </script>
 
 
