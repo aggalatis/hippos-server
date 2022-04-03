@@ -238,7 +238,7 @@ TakeawayClass.prototype.initializeCategories = function () {
                             .css('background-color', self.selectedCategoryBackColor)
                             .removeClass('category-shadows')
                             .attr('disabled', null)
-                        $('#category_name' + self.selectedCategoryID).css('color', 'black')
+                        $('#category_name_' + self.selectedCategoryID).css('color', 'black')
                     }
                     self.selectedCategoryBackColor = $('#category_' + categoryID).data('category-background')
                     self.selectedCategoryID = categoryID
@@ -533,7 +533,7 @@ TakeawayClass.prototype.initializeCartButtons = function () {
 
     $('#send-order-btn').on('click', function () {
         if (self.cartProducts.length != 0) {
-            var typeOfPayment
+            let typeOfPayment = ''
             if ($('#cash-card-btn').html() == 'ΜΕΤΡΗΤΑ') {
                 typeOfPayment = 'cash'
             } else {
@@ -544,6 +544,7 @@ TakeawayClass.prototype.initializeCartButtons = function () {
                 self.Helpers.toastr('error', 'Το σύνολο της παραγγελίας υπερβαίνει το επιτρεπόμενο όριο.')
                 return
             }
+            $(this).attr('disabled', 'disabled')
             if (self.selectedCustomer === null) {
                 //This is a receipt
                 var orderObj = {
@@ -568,6 +569,7 @@ TakeawayClass.prototype.initializeCartButtons = function () {
                     dataType: 'json',
                     data: JSON.stringify(orderObj),
                     success: function (response) {
+                        $('#send-order-btn').attr('disabled', null)
                         if (response.status === 200) {
                             self.Helpers.toastr('success', 'Επιτυχής καταχώρηση παραγγελίας.')
                             $('#cash-card-btn').html('ΜΕΤΡΗΤΑ')
@@ -580,6 +582,7 @@ TakeawayClass.prototype.initializeCartButtons = function () {
                         }
                     },
                     error: function (jqXHR, textStatus) {
+                        $('#send-order-btn').attr('disabled', null)
                         self.Helpers.toastrServerError()
                     },
                 })
@@ -617,6 +620,8 @@ TakeawayClass.prototype.initializeCartButtons = function () {
                             dataType: 'json',
                             data: JSON.stringify(orderObj),
                             success: function (secondResponse) {
+                                $('#send-order-btn').attr('disabled', null)
+
                                 if (secondResponse.status === 200) {
                                     self.Helpers.toastr('success', 'Επιτυχής καταχώρηση παραγγελίας.')
                                     $('#cash-card-btn').html('ΜΕΤΡΗΤΑ')
@@ -630,6 +635,7 @@ TakeawayClass.prototype.initializeCartButtons = function () {
                             },
                             error: function (jqXHR, textStatus) {
                                 console.log(jqXHR)
+                                $('#send-order-btn').attr('disabled', null)
                                 self.Helpers.toastrServerError()
                             },
                         })

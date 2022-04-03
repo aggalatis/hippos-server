@@ -56,10 +56,11 @@ async function sendInvoiceToRocketax(invoiceNumber, orderData, vats) {
             type: '1',
             paymentType: '3',
             movementPurpose: '1',
-            classificationCategory: '1',
             paymentTypeText: '3 - Μετρητά',
             typeText: '1.1 - Τιμολόγιο Πώλησης',
             clientId: userData.username.Id,
+            classificationCategory: '2',
+            classificationType: '7',
         },
         lines: invoiceData.lines,
         totals: invoiceData.totals,
@@ -68,7 +69,6 @@ async function sendInvoiceToRocketax(invoiceNumber, orderData, vats) {
         axios
             .post(`${global.parameters.server.remoteUrl}Incomes`, rocketMessage, { headers: headers })
             .then(response => {
-                console.log(response)
                 if (response.status != 200) {
                     helpers.log(JSON.stringify(response))
                     resolve(null)
