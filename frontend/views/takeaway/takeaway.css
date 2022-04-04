@@ -107,3 +107,9 @@ a#easy-numpad-close {
     display: block;
     width: 25%;
 }
+
+.pagination-arrow {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}

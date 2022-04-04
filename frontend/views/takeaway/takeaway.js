@@ -14,6 +14,7 @@ let TakeawayClass = function () {
         } else {
             self.initializeCategories()
             self.initializeProducts()
+            self.initializePagination()
             self.initializeNumpadNumbers('modal-numpad-input')
         }
         self.initializeCartButtons()
@@ -34,6 +35,7 @@ let TakeawayClass = function () {
     this.countNumpadNumbers = []
     this.counter = 0
     this.selectedCustomer = null
+    this.currentProductsPage = 0
 }
 
 TakeawayClass.prototype.initializeSizes = function () {
@@ -174,7 +176,6 @@ TakeawayClass.prototype.initializeProducts = function () {
                         $('#keyboard-modal').modal('show')
                     }
                 })
-
                 console.log('Products initialization done.')
             } else {
                 self.Helpers.toastrServerError()
@@ -183,6 +184,44 @@ TakeawayClass.prototype.initializeProducts = function () {
         error: function (jqXHR, textStatus) {
             self.Helpers.swalServerError()
         },
+    })
+}
+
+TakeawayClass.prototype.initializePagination = function () {
+    let self = this
+    $('.pagination-arrow').on('click', function () {
+        console.log(self.fullProducts)
+        let categoryProducts = self.fullProducts.filter(el => el.product_category_id == self.selectedCategoryID)
+        let perPage = parseInt(self.Helpers.userSettings.catalogue.products_per_page)
+        if (categoryProducts.length <= perPage) return
+        if ($(this).data('type') == 'up') {
+            if (self.currentProductsPage - 1 < 0) return
+            self.currentProductsPage--
+        }
+        if ($(this).data('type') == 'down') {
+            console.log(categoryProducts.length)
+            console.log(perPage)
+            console.log(Math.ceil(categoryProducts.length / perPage))
+            if (self.currentProductsPage + 1 >= Math.ceil(categoryProducts.length / perPage)) return
+            self.currentProductsPage++
+        }
+        let shownProducts = 0
+        let counter = 0
+        for (let prod of $('.product-btn')) {
+            if ($(prod).data('product-category') == self.selectedCategoryID) {
+                if (counter >= self.currentProductsPage * perPage) {
+                    if (shownProducts < perPage) {
+                        $(prod).show()
+                        shownProducts++
+                    } else {
+                        $(prod).hide()
+                    }
+                } else {
+                    $(prod).hide()
+                }
+                counter++
+            }
+        }
     })
 }
 TakeawayClass.prototype.initializeCategories = function () {
@@ -242,9 +281,17 @@ TakeawayClass.prototype.initializeCategories = function () {
                     }
                     self.selectedCategoryBackColor = $('#category_' + categoryID).data('category-background')
                     self.selectedCategoryID = categoryID
+                    self.currentProductsPage = 0
                     self.selectedCategoryIndex = categoryIndex
+                    let shownProducts = 0
                     for (let prod of $('.product-btn')) {
-                        $(prod).data('product-category') == categoryID ? $(prod).show() : $(prod).hide()
+                        if ($(prod).data('product-category') == categoryID) {
+                            shownProducts++
+                            if (shownProducts > parseInt(self.Helpers.userSettings.catalogue.products_per_page)) continue
+                            $(prod).show()
+                        } else {
+                            $(prod).hide()
+                        }
                     }
                 })
 
