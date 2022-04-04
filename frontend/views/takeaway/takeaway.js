@@ -67,6 +67,7 @@ TakeawayClass.prototype.initializeProductsLikeCategories = function () {
     $('#products_paginator').html('Πληκτρολόγιο')
     $('#keyboard-layout').show()
     $('#products-layout').hide()
+    $('.pagination-i').hide()
     $.ajax({
         url: self.Helpers.LOCAL_API + 'products',
         type: 'GET',
@@ -190,7 +191,6 @@ TakeawayClass.prototype.initializeProducts = function () {
 TakeawayClass.prototype.initializePagination = function () {
     let self = this
     $('.pagination-arrow').on('click', function () {
-        console.log(self.fullProducts)
         let categoryProducts = self.fullProducts.filter(el => el.product_category_id == self.selectedCategoryID)
         let perPage = parseInt(self.Helpers.userSettings.catalogue.products_per_page)
         if (categoryProducts.length <= perPage) return
@@ -199,9 +199,6 @@ TakeawayClass.prototype.initializePagination = function () {
             self.currentProductsPage--
         }
         if ($(this).data('type') == 'down') {
-            console.log(categoryProducts.length)
-            console.log(perPage)
-            console.log(Math.ceil(categoryProducts.length / perPage))
             if (self.currentProductsPage + 1 >= Math.ceil(categoryProducts.length / perPage)) return
             self.currentProductsPage++
         }

@@ -3,6 +3,8 @@ let HelpersClass = function () {
     self.tokenData = null
     self.requestTimeout = 5000
     self.userSettings = {}
+    let consoleStyle = ['color: #fff', 'background-color: #2F4F4F', 'padding: 2px 4px', 'border-radius: 2px'].join(';')
+    console.log(`%cHippos!! More info about us on our website hippos.tech`, consoleStyle)
     self.initSettings()
     self.initActions()
     self.bindLogout()
