@@ -104,10 +104,10 @@ function formatOrderDataForRocket(orderData, vats) {
     let lines = []
     for (let prod of orderData.products) {
         let vatData = vats.find(el => el.vat_id == prod.product_vat_id)
-        pieceGrossValue = parseFloat(prod.product_price) - parseFloat(prod.product_discount)
+
+        pieceGrossValue = (parseFloat(prod.product_price) - parseFloat(prod.product_discount)) * prod.product_quantity
         pieceNetValue = pieceGrossValue / vatData.vat_decimal_full
         pieceVatvalue = pieceGrossValue - pieceNetValue
-
         pieceDiscount = parseFloat(prod.product_discount)
         pieceNetDiscount = pieceDiscount / vatData.vat_decimal_full
 
@@ -123,12 +123,12 @@ function formatOrderDataForRocket(orderData, vats) {
             comment: prod.product_name,
             measurementUnit: '1',
         })
-        vatTotalsObj[vatData.vat_percent].netValue += pieceNetValue.toFixed(2) * prod.product_quantity
-        vatTotalsObj[vatData.vat_percent].taxValue += pieceVatvalue.toFixed(2) * prod.product_quantity
+        vatTotalsObj[vatData.vat_percent].netValue += parseFloat(pieceNetValue.toFixed(2))
+        vatTotalsObj[vatData.vat_percent].taxValue += parseFloat(pieceVatvalue.toFixed(2))
 
-        netTotal += pieceNetValue.toFixed(2) * prod.product_quantity
-        vatTotal += pieceVatvalue.toFixed(2) * prod.product_quantity
-        discountTotal += pieceNetDiscount.toFixed(2) * prod.product_quantity
+        netTotal += parseFloat(pieceNetValue.toFixed(2))
+        vatTotal += parseFloat(pieceVatvalue.toFixed(2))
+        discountTotal += parseFloat(pieceNetDiscount.toFixed(2))
     }
     return {
         lines: lines,

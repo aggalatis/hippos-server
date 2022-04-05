@@ -62,8 +62,8 @@ async function createInvoice(invoiceNumber, orderData, orderMark, vats) {
         let lnStr = ''
         let quan = ln.quantity.toString().padEnd(5, ' ')
         let name = ln.comment.substring(0, 10).padEnd(10, ' ')
-        let price = (ln.netValue * ln.quantity).toFixed(2).toString().replace('.', ',').padStart(14, ' ')
-        let vat = ln.vatPercent.toString().padStart(5, ' ')
+        let price = ln.netValue.toString().replace('.', ',').padStart(14, ' ')
+        let vat = ln.vatPercent.toString().replace('%', '').padStart(5, ' ')
         lnStr = ' ' + quan + name + price + vat
         prodArr.push(lnStr)
     }

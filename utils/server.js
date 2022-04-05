@@ -67,7 +67,7 @@ async function sendInvoiceToRocketax(invoiceNumber, orderData, vats) {
     }
     return new Promise((resolve, reject) => {
         axios
-            .post(`${global.parameters.server.remoteUrl}Incomes`, rocketMessage, { headers: headers })
+            .post(`${global.parameters.server.remoteUrl}Incomes/Hippos`, rocketMessage, { headers: headers })
             .then(response => {
                 if (response.status != 200) {
                     helpers.log(JSON.stringify(response))
